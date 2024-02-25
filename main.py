@@ -1,4 +1,4 @@
-#!/bin/env python3
+#!/bin/env python
 
 import sys,argparse,configparser,signal
 
@@ -151,6 +151,9 @@ class Window():
     def __init__(self, root, *args, **kwargs):
         self.root           = root
         self.root.protocol                  ( "WM_DELETE_WINDOW", self.quit );
+        self.root.geometry("600x400")
+        self.root.minsize(400,200)
+
 
         self.startup        = True
         self.frame          = VerticalScrolledFrame (   root );
@@ -251,6 +254,7 @@ class Window():
         self.passed_file_item_ref = deepcopy(self.passed_file_item)
         self.startup = False
         self.check_save_enabled()
+        self.root.title(f"Editing: {self.passed_file_path}")
 
 
     # def return_pressed(self,e,key,section):
