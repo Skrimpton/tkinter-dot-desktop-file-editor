@@ -1,0 +1,41 @@
+[Desktop Action Restart]
+Exec=notify-send "lol % hoi"; notify-send "poop"
+Name[en_us]=Restart
+Name=Restart
+
+[Desktop Action Logout]
+Exec=notify-send "pop"
+Name[en_us]=Log out
+Name=Log out
+
+[Desktop Action Shutdown]
+Exec=notify-send "fuck"
+Name[en_us]=Turn off
+Name=Turn off
+
+[Desktop Action Sleep]
+Exec=notify-send "smekk"
+Name[en_us]=Sleep
+Name=Sleep
+
+[Desktop Action Hibernate]
+Exec=notify-send "smokk"
+Name[en_us]=Hibernate
+Name=Hibernate
+
+[Desktop Entry]
+Actions=Restart;Logout;Shutdown;Sleep;Hibernate
+Categories=Settings;
+Comment=Shutdown, Sleep, Hibernate or Restart the PC. Hibernate requires less power than sleep, but have for some PCs caused problems such as session crashes.
+Exec=notify-send "Main % fuck"
+Genericname=big fudge
+Icon=system-shutdown-symbolic
+Name=kukk
+Nodisplay=true
+Terminal=false
+Terminaloptions=
+Type=Application
+X-kde-substituteuid=false
+X-kde-username=
+X-multipleargs=false
+
