@@ -26,7 +26,7 @@ Name=Hibernate
 [Desktop Entry]
 Actions=Restart;Logout;Shutdown;Sleep;Hibernate
 Categories=Settings;
-Comment=Shutdown, Sleep, Hibernate or Restart the PC. Hibernate requires less power than sleep, but have for some PCs caused problems such as session crashes.
+Comment=Shutdown, Sleep, Hibernate or Restart the PC. Hibernate requires less power than sleep, but has been know to casue problems such as session crashes.
 Exec=notify-send "Main % fuck"
 Genericname=big fudge
 Icon=system-shutdown-symbolic
