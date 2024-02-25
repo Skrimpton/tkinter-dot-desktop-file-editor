@@ -9,7 +9,7 @@ Name[en_us]=Log out
 Name=Log out
 
 [Desktop Action Shutdown]
-Exec=notify-send "fuck"
+Exec=notify-send "fudge"
 Name[en_us]=Turn off
 Name=Turn off
 
@@ -27,10 +27,10 @@ Name=Hibernate
 Actions=Restart;Logout;Shutdown;Sleep;Hibernate
 Categories=Settings;
 Comment=Shutdown, Sleep, Hibernate or Restart the PC. Hibernate requires less power than sleep, but has been know to casue problems such as session crashes.
-Exec=notify-send "Main % fuck"
+Exec=notify-send "Main % fudge"
 Genericname=big fudge
 Icon=system-shutdown-symbolic
-Name=kukk
+Name=cooky
 Nodisplay=true
 Terminal=false
 Terminaloptions=
