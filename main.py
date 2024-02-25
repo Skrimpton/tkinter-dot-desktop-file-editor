@@ -1,4 +1,4 @@
-#!/bin/env python
+#!/bin/env python3
 
 import sys,argparse,configparser,signal
 
@@ -61,7 +61,7 @@ elif args.desktop_file != None:
 
 
 
-if passed_file != "":
+if passed_file != "" and passed_file.endswith(".desktop"):
 
     # config = configparser.ConfigParser()
     config = configparser.RawConfigParser()
