@@ -180,29 +180,33 @@ class Window():
         self.root.destroy                   ()
 
     def ok_pressed(self,event=None):
-        try:
-            conf = configparser.RawConfigParser()
-            conf.optionxform = str
-            for i,x in self.passed_file_item.items():
-                conf[i]=x
-            with open(self.passed_file_path, 'w+', encoding='utf8') as configfile:   # not sure about the encoding
-                conf.write(configfile,space_around_delimiters=False)
+        if self.passed_file_item_ref == self.passed_file_item:
+            # print("Identical documents")
+            return
+        else:
+            try:
+                conf = configparser.RawConfigParser()
+                conf.optionxform = str
+                for i,x in self.passed_file_item.items():
+                    conf[i]=x
+                with open(self.passed_file_path, 'w+', encoding='utf8') as configfile:   # not sure about the encoding
+                    conf.write(configfile,space_around_delimiters=False)
 
-        except Exception as e:
-            print("Error occured while saving file",e)
-            self.root.destroy()
+            except Exception as e:
+                print("Error occured while saving file",e)
+                self.root.destroy()
 
-        new_passed_file_item = {}
+            new_passed_file_item = {}
 
-        for section in conf.sections():
-            new_passed_file_item [section]                = {}
+            for section in conf.sections():
+                new_passed_file_item [section]                = {}
 
-            for key, val in conf.items    (section):
-                new_passed_file_item [section][key]       = val
+                for key, val in conf.items    (section):
+                    new_passed_file_item [section][key]       = val
 
-        self.passed_file_item = new_passed_file_item
-        self.passed_file_item_ref = deepcopy(self.passed_file_item)
-        self.check_save_enabled()
+            self.passed_file_item = new_passed_file_item
+            self.passed_file_item_ref = deepcopy(self.passed_file_item)
+            self.check_save_enabled()
 
 
 
@@ -230,7 +234,7 @@ class Window():
 
                     entry               =   TweakedEntry    (   parent=box,
                                                                 root=self.root,
-                                                                key=a,
+                                                                # key=a,
                                                                 font=("",9)
                     );
                     # '<<ReturnPressed>>' is hmmmm...
@@ -311,10 +315,13 @@ class Window():
 if __name__ == "__main__":
 
     root = tk.Tk()
-  
+
     window = Window(root)
     window.passed_file_item = passed_file_item
     window.passed_file_path = passed_file
     window.buildUi()
-  
+
     root.mainloop()
+
+
+
