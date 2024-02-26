@@ -6,5 +6,4 @@
 
 ### Usage
 - can be used with or without -f
-
-![tkexample](https://github.com/Skrimpton/tkinter-dot-desktop-file-editor/assets/64572787/122d266d-214a-4022-8b49-481fba1f79f7)
+![tkeditor-example](https://github.com/Skrimpton/tkinter-dot-desktop-file-editor/assets/64572787/70e149e5-0210-4905-a023-251633455ed8)
