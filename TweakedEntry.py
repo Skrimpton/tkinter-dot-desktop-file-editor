@@ -10,14 +10,14 @@ from    collections import  deque
 
 
 class CEntry(ttk.Entry): # https://stackoverflow.com/a/75367456
-    def __init__(self, parent=None, root=None, font=None, key=None,enabled=True, *args, **kwargs):
+    def __init__(self, parent=None, root=None, font=None ,enabled=True, *args, **kwargs):
 
         ttk.Entry.__init__(self, parent, *args, **kwargs)
-        self.key                    = key
         self.parent                 = parent
         self.root                   = root
         self.dir_select             = False
         self.undo_redo_reopen       = False
+        self.word_splitter          = " "
         self._undo_stack            = deque(maxlen=100)
         self._redo_stack            = deque(maxlen=100)
         # self.entry_text             = parent.entry_text
@@ -73,7 +73,6 @@ class CEntry(ttk.Entry): # https://stackoverflow.com/a/75367456
         self.context_menu.add_command(label="Undo")
         self.context_menu.add_command(label="Redo")
 
-
     def set_bindings(self):
         self.bind("<FocusOut>",self.handlePopupClose)
 
@@ -82,25 +81,27 @@ class CEntry(ttk.Entry): # https://stackoverflow.com/a/75367456
         self.bind("<Button-3>", self.popup)
 
         # self.bind("<Motion>",self.onWheel)
-        self.bind   ('<<Paste>>',           self.paste)
-        self.bind   ('<FocusOut>',          self.handleFocusOut)
-        self.bind   ("<Return>",            self._return_pressed)
-        self.bind   ("<Shift-Up>",          self._shift_up_down)
-        self.bind   ("<Shift-Down>",        self._shift_up_down)
-        self.bind   ("<Alt-Shift-slash>",   self.toggle_dir_select)
-        self.bind   ("<Alt-Shift-R>",       self.toggle_undo_redo_reopen)
-        self.bind   ("<Alt-Left>",          lambda e:self.scrollHandler(2))
-        self.bind   ("<Alt-Right>",         lambda e:self.scrollHandler(1))
-        self.bind   ("<Control-A>",         self._select_all)
-        self.bind   ("<Control-a>",         self._select_all)
+        self.bind   ('<<Paste>>',               self.paste)
+        self.bind   ('<FocusOut>',              self.handleFocusOut)
+        self.bind   ("<Return>",                self._return_pressed)
+        self.bind   ("<Shift-Up>",              self._shift_up_down)
+        self.bind   ("<Shift-Down>",            self._shift_up_down)
+        self.bind   ("<Alt-Shift-slash>",       self._mode_dir_select)
+        self.bind   ("<Alt-Shift-semicolon>",   self._mode_semi_select)
+        self.bind   ("<Alt-Shift-space>",       self._mode_space_select)
+        self.bind   ("<Alt-Shift-R>",           self.toggle_undo_redo_reopen)
+        self.bind   ("<Alt-Left>",              lambda e:self.handleScroll(2))
+        self.bind   ("<Alt-Right>",             lambda e:self.handleScroll(1))
+        self.bind   ("<Control-A>",             self._select_all)
+        self.bind   ("<Control-a>",             self._select_all)
 
-        self.bind   ("<Control-z>",         self.undo)
-        self.bind   ("<Control-Z>",         self.undo)
+        self.bind   ("<Control-z>",             self.undo)
+        self.bind   ("<Control-Z>",             self.undo)
         #
-        self.bind   ("<Control-y>",         self.redo)
-        self.bind   ("<Control-Y>",         self.redo)
-        self.bind   ("<Control-Shift-z>",   self.redo)
-        self.bind   ("<Control-Shift-Z>",   self.redo)
+        self.bind   ("<Control-y>",             self.redo)
+        self.bind   ("<Control-Y>",             self.redo)
+        self.bind   ("<Control-Shift-z>",       self.redo)
+        self.bind   ("<Control-Shift-Z>",       self.redo)
 
         self.trace_id = self.entry_text.trace("w", self.on_changes)
         self.bind   ('<Control-BackSpace>', self.entry_ctrl_bs)
@@ -108,12 +109,40 @@ class CEntry(ttk.Entry): # https://stackoverflow.com/a/75367456
     def toggle_undo_redo_reopen(self,e):
         self.undo_redo_reopen = not self.undo_redo_reopen
 
-    def toggle_dir_select(self,e):
+    def _mode_dir_select(self,e):
 
         self.event_generate('<<SelectModeChanged>>')
-        print("select mode (dir):",self.dir_select)
 
-        self.dir_select = not self.dir_select
+        if self.word_splitter != "/":
+            self.word_splitter = "/"
+        else:
+            self.word_splitter = " "
+
+        print(f"New <Shift-Up/-Down> selection-splitter is ->{self.word_splitter}<-")
+        if self.select_present():
+            self.select_range(0,0)
+
+    def _mode_semi_select(self,e):
+
+        self.event_generate('<<SelectModeChanged>>')
+
+        if self.word_splitter != ";":
+            self.word_splitter = ";"
+        else:
+            self.word_splitter = " "
+
+        print(f"New <Shift-Up/-Down> selection-splitter is ->{self.word_splitter}<-")
+        if self.select_present():
+            self.select_range(0,0)
+
+    def _mode_space_select(self,e):
+
+        self.event_generate('<<SelectModeChanged>>')
+
+        if self.word_splitter != " ":
+            self.word_splitter = " "
+            print(f"New <Shift-Up/-Down> selection-splitter is ->{self.word_splitter}<-")
+
         if self.select_present():
             self.select_range(0,0)
 
@@ -127,23 +156,29 @@ class CEntry(ttk.Entry): # https://stackoverflow.com/a/75367456
     def handlePopupClose(self,e=None):
         self.context_menu.unpost()
 
-    def _wordAtIndex(self,string,index):
-        if self.dir_select == True:
-            sp = string.split('/')
+    def handleScroll(self,mode):
+        if mode == 2:
+            self.xview_scroll(-2, "units")
         else:
-            sp = string.split(' ')
+            self.xview_scroll(2, "units")
+        return "break"
+
+    def handleWordAtIndex(self,string,index):
+
+        sp = string.split(self.word_splitter)
+
         total_len = 0
+
         for word in sp:
-            total_len += (len(word) + 1)    #The '+1' accounts for the underscore
+            total_len += (len(word) + 1)
             if index < total_len:
                 result = word
                 break
 
         end_idx         = self.index(tk.INSERT)
-        if self.dir_select == True:
-            start_idx       = (self.get().rfind("/", None, end_idx)+1) # magic word-boundary finder <3
-        else:
-            start_idx       = (self.get().rfind(" ", None, end_idx)+1) # magic word-boundary finder <3
+
+        start_idx       = (self.get().rfind(self.word_splitter, None, end_idx)+1)
+
         _s              = start_idx
         _e = _s + len(result)
         # return (_s,_e,result)
@@ -151,6 +186,7 @@ class CEntry(ttk.Entry): # https://stackoverflow.com/a/75367456
 
     def _select_all(self,e):
         if self.select_present():
+            # print(self.selection_get(),self.get())
             if self.selection_get() == self.get():
                 self.select_range(0,0)
             else:
@@ -166,11 +202,14 @@ class CEntry(ttk.Entry): # https://stackoverflow.com/a/75367456
         self.after(10, lambda: self.select_range(0,tk.END))
 
     def _shift_up_down(self,e):
-        index_pack = self._wordAtIndex(e.widget.get(),self.index(tk.INSERT))
+        index_pack = self.handleWordAtIndex(e.widget.get(),self.index(tk.INSERT))
 
         if self.select_present():
             if self.selection_get() == e.widget.get():
-                self.select_range(index_pack[0],index_pack[1])
+                if index_pack[1] == len(e.widget.get()):
+                    self.select_range(0,0)
+                else:
+                    self.select_range(index_pack[0],index_pack[1])
                 # self.select_range(0,0)
             else:
                 self.select_range(0,tk.END)
@@ -181,30 +220,35 @@ class CEntry(ttk.Entry): # https://stackoverflow.com/a/75367456
 
     def onMouse(self,e):
         self.handlePopupClose()
-        # print(e.num,e.y)
+
         if e.num==5 or e.num ==6:
-            self.scrollHandler(1)
+            self.handleScroll(1)
             return "break"
+
         elif e.num==4 or e.num==7:
-            self.scrollHandler(2)
+            self.handleScroll(2)
             return "break"
 
 
-
-    def scrollHandler(self,mode):
-        if mode == 2:
-            self.xview_scroll(-2, "units")
-        else:
-            self.xview_scroll(2, "units")
-        return "break"
-
-    def entry_ctrl_bs(self, event): # TODO Automatically adapt to contents separator (";" "/" and so forth)
+    def entry_ctrl_bs(self, event): # TODO Automatically adapt to contents separator (";" "/" and so forth)?
         # print()
         if not self.select_present():
+
             end_idx         = self.index(tk.INSERT)
-            start_idx       = (self.get().rfind(" ", None, end_idx)+1)
+
+            if " " in self.get():
+                start_idx       = (self.get().rfind(" ", None, end_idx)+1)
+            elif "/" in self.get():
+                start_idx       = (self.get().rfind("/", None, end_idx)+1)
+            elif ";" in self.get():
+                start_idx       = (self.get().rfind(";", None, end_idx)+1)
+            else:
+                start_idx       = (self.get().rfind(" ", None, end_idx)+1)
+
             if end_idx != start_idx:
+
                 self.selection_range(start_idx, end_idx)
+
                 if self.selection_get().startswith("\""):
                     self.selection_range(start_idx+1, end_idx)
 
@@ -244,8 +288,6 @@ class CEntry(ttk.Entry): # https://stackoverflow.com/a/75367456
             self.context_menu.entryconfigure    ("Select all",state="disabled")
         else:
             self.context_menu.entryconfigure    ("Select all",state="normal")
-
-
 
         self.context_menu.post(event.x_root, event.y_root)
         # self.context_menu.focus_set()
@@ -313,17 +355,21 @@ class CEntry(ttk.Entry): # https://stackoverflow.com/a/75367456
 
         old_view =  self.xview()
         old_index = self.index(tk.INSERT)
+
         if old_index < self.index(tk.END):
             reset_index = True
         else:
             reset_index = False
         content = self._redo_stack.pop()
+
         self._undo_stack.append(content)
         self.entry_text.trace_vdelete("w", self.trace_id)
+
         self.delete(0, tk.END)
         self.insert(0, content)
 
         self.event_generate('<<FieldChanged>>')
+
         # self.icursor(len(content))
         self.trace_id = self.entry_text.trace("w", self.on_changes)
         if reset_index:
@@ -338,7 +384,6 @@ class CEntry(ttk.Entry): # https://stackoverflow.com/a/75367456
         # self.see(tk.INSERT)
         return "break"
 
-
     def on_changes(self, a=None, b=None, c=None):  # noqa
         # Event.VirtualEventData = "poop"
         self.event_generate('<<FieldChanged>>')
@@ -349,4 +394,3 @@ class CEntry(ttk.Entry): # https://stackoverflow.com/a/75367456
         self._undo_stack.clear()
         self._redo_stack.clear()
         self._undo_stack.append(self.entry_text.get())
-
