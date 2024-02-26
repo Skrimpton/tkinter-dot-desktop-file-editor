@@ -59,8 +59,6 @@ elif args.desktop_file != None:
         if isfile(args_file) and args_file.endswith(".desktop"):
             passed_file = args_file
 
-
-
 if passed_file != "" and passed_file.endswith(".desktop"):
     _dir = dirname(realpath(passed_file))
 
@@ -83,7 +81,6 @@ if passed_file != "" and passed_file.endswith(".desktop"):
 
 else:
     print("Need a .desktop-file to edit"),sys.exit(1)
-
 
 
 class VerticalScrolledFrame(ttk.Frame): # https://coderslegacy.com/python/make-scrollable-frame-in-tkinter/
@@ -162,7 +159,6 @@ class Window():
         self.frame          = VerticalScrolledFrame (   root );
         self.desktop_boxes  = []
         self.frame.pack     (   expand = True, fill = tk.BOTH );
-        self.label          = ttk.Label             (   root, text="Shrink the window to activate the scrollbar." );
 
         self.passed_file_item       = None
         self.passed_file_item_ref   = None
