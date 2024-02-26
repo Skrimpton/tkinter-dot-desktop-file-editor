@@ -170,7 +170,7 @@ class Window():
         self.ctrl_c_timer           = None
 
         self.frame.bind("<<OkPressed>>",self.ok_pressed)
-        self.root.bind("<Control-Return>",self.ok_pressed)
+        self.root.bind("<Return>",self.ok_pressed)
 
     def quit(self):
 
@@ -311,13 +311,10 @@ class Window():
 if __name__ == "__main__":
 
     root = tk.Tk()
+  
     window = Window(root)
     window.passed_file_item = passed_file_item
     window.passed_file_path = passed_file
     window.buildUi()
-
-
+  
     root.mainloop()
-
-
-
