@@ -34,7 +34,7 @@ def keyboard_interrupt_handler(sig, frame):
 passed_file         = ""
 passed_file_item    = {}
 
-parser              = argparse.ArgumentParser(description='Desktop file creator')
+parser              = argparse.ArgumentParser(description='Desktop file editor')
 
 parser.add_argument (
     '-f',
@@ -62,7 +62,10 @@ elif args.desktop_file != None:
 
 
 if passed_file != "" and passed_file.endswith(".desktop"):
+    _dir = dirname(realpath(passed_file))
 
+    if access(_dir, W_OK) == False:
+        print(f"Can't write to {_dir}"),sys.exit(1)
     # config = configparser.ConfigParser()
     config = configparser.RawConfigParser()
     config.optionxform = str
@@ -167,6 +170,7 @@ class Window():
         self.ctrl_c_timer           = None
 
         self.frame.bind("<<OkPressed>>",self.ok_pressed)
+        self.root.bind("<Control-Return>",self.ok_pressed)
     def quit(self):
 
         if self.ctrl_c_timer != None:
@@ -175,29 +179,30 @@ class Window():
         self.root.destroy                   ()
 
     def ok_pressed(self,event=None):
-        conf = configparser.RawConfigParser()
-        conf.optionxform = str
-        for i,x in self.passed_file_item.items():
-            conf[i]=x
         try:
-            with open(self.passed_file_path, 'w+', encoding='utf8') as configfile:
+            conf = configparser.RawConfigParser()
+            conf.optionxform = str
+            for i,x in self.passed_file_item.items():
+                conf[i]=x
+            with open(self.passed_file_path, 'w+', encoding='utf8') as configfile:   # not sure about the encoding
                 conf.write(configfile,space_around_delimiters=False)
-            # configfile.close()
 
-            new_passed_file_item = {}
-
-            for section in conf.sections():
-                new_passed_file_item [section]                = {}
-
-                for key, val in conf.items    (section):
-                    new_passed_file_item [section][key]       = val
-
-            self.passed_file_item = new_passed_file_item
-            self.passed_file_item_ref = deepcopy(self.passed_file_item)
-            self.check_save_enabled()
-
-        except PermissionError:
+        except Exception as e:
+            print("Error occured while saving file",e)
             self.root.destroy()
+
+        new_passed_file_item = {}
+
+        for section in conf.sections():
+            new_passed_file_item [section]                = {}
+
+            for key, val in conf.items    (section):
+                new_passed_file_item [section][key]       = val
+
+        self.passed_file_item = new_passed_file_item
+        self.passed_file_item_ref = deepcopy(self.passed_file_item)
+        self.check_save_enabled()
+
 
 
     def buildUi(self):
@@ -281,10 +286,10 @@ class Window():
     # DECLARE AND START THE TIMER THAT LETS <CTRL+C> IN THE TERMINAL CLOSE THE WINDOW
     #
     def startCtrlCTimer(self): # <⋅⋅⋅⋅⋅⋅⋅⋅⋅⋅⋅⋅⋅⋅⋅⋅⋅⋅⋅⋅⋅⋅⋅⋅⋅⋅⋅⋅⋅⋅⋅⋅⋅⋅⋅⋅⋅⋅⋅⋅⋅⋅⋅               START <CTRL+C>-TIMER
-                                                      #         I LIKE TO KEEP A 'self.'-REFERENCE OF '.after()'
-        self.ctrl_c_timer = self.root.after (         #     THIS WAY WE CAN STOP THE TIMER AND AVOID ERRORS LIKE
-            80,self.startCtrlCTimer                   #   "NO COMMAND FOUND", IF TIMER FIRES AFTER / WHILE DOING
-        );                                            #                                    'self.root.destroy()'
+
+        self.ctrl_c_timer = self.root.after (
+            80,self.startCtrlCTimer
+        );
 
 
     def toggleCtrlCTimer(self): # <⋅⋅⋅⋅⋅⋅⋅⋅⋅⋅⋅⋅⋅⋅⋅⋅⋅⋅⋅⋅⋅⋅⋅⋅⋅⋅⋅⋅⋅⋅⋅⋅⋅⋅⋅⋅⋅⋅⋅⋅⋅⋅       TOGGLE <CTRL+C>-TIMER ON/OFF
@@ -296,9 +301,6 @@ class Window():
             self.ctrl_c_timer               = None
 
     # --- END INFINTE LOOP END ---------------------------------------------------------------------------------
-
-
-        # print(e,key,section)
 
 
 if __name__ == "__main__":
