@@ -196,13 +196,15 @@ class CEntry(ttk.Entry): # https://stackoverflow.com/a/75367456
             self.xview_scroll(2, "units")
         return "break"
 
-    def entry_ctrl_bs(self, event):
+    def entry_ctrl_bs(self, event): # TODO Automatically adapt to contents separator (";" "/" and so forth)
         # print()
         if not self.select_present():
             end_idx         = self.index(tk.INSERT)
-            start_idx       = (self.get().rfind(" ", None, end_idx)+1) # magic word-boundary finder <3
+            start_idx       = (self.get().rfind(" ", None, end_idx)+1)
             if end_idx != start_idx:
                 self.selection_range(start_idx, end_idx)
+                if self.selection_get().startswith("\""):
+                    self.selection_range(start_idx+1, end_idx)
 
     def paste(self,e):
         self.on_changes()
