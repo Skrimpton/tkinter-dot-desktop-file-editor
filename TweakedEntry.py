@@ -6,9 +6,7 @@ import  re, sys, signal
 
 import  tkinter     as      tk
 from    tkinter     import  ttk
-
-
-from collections import deque
+from    collections import  deque
 
 
 class CEntry(ttk.Entry): # https://stackoverflow.com/a/75367456
