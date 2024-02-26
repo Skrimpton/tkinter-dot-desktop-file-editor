@@ -2,6 +2,15 @@
 
 import sys,argparse,configparser,signal
 
+try:
+    import tkinter as tk
+    import tkinter.ttk as ttk
+    from tkinter.constants import *
+except:
+    print("no tkinter, no joy"),sys.exit(1)
+else:
+    from TweakedEntry import CEntry as TweakedEntry
+
 from copy import        deepcopy
 
 from os.path import (   isfile,
@@ -13,14 +22,6 @@ from os import      (   access,
                         W_OK
 )
 
-try:
-    import tkinter as tk
-    import tkinter.ttk as ttk
-    from tkinter.constants import *
-except:
-    print("no tkinter, no joy"),sys.exit(1)
-else:
-    from TweakedEntry import CEntry as TweakedEntry
 
 
 def keyboard_interrupt_handler(sig, frame):
@@ -120,16 +121,15 @@ class VerticalScrolledFrame(ttk.Frame): # https://coderslegacy.com/python/make-s
                                                         window=self.interior, anchor=NW );
         self.vscrollbar = vscrollbar
         self.vscrollbar.bind('<Button>',self.scrollbar_pressed)
-      
+
     def scrollbar_pressed(self,e):
         if e.num == 4 or e.num == 6:
             self._scroll_up()
+            return "break"
 
         elif e.num == 5 or e.num == 7:
             self._scroll_down()
-        return "break"
-
-
+            return "break"
 
     def ok_pressed(self):
         self.event_generate('<<OkPressed>>')
@@ -167,9 +167,9 @@ class Window():
 
     def __init__(self, root, *args, **kwargs):
         self.root           = root
-        self.root.protocol                  ( "WM_DELETE_WINDOW", self.quit );
-        self.root.geometry("600x400")
-        self.root.minsize(400,200)
+        self.root.protocol  ( "WM_DELETE_WINDOW", self.quit );
+        self.root.geometry  ("600x400")
+        self.root.minsize   (400,200)
 
 
         self.startup        = True
@@ -343,3 +343,6 @@ if __name__ == "__main__":
     window.buildUi()
 
     root.mainloop()
+
+
+
