@@ -119,6 +119,16 @@ class VerticalScrolledFrame(ttk.Frame): # https://coderslegacy.com/python/make-s
         self.interior_id = self.canvas.create_window(   0, 0,
                                                         window=self.interior, anchor=NW );
         self.vscrollbar = vscrollbar
+        self.vscrollbar.bind('<Button>',self.scrollbar_pressed)
+    def scrollbar_pressed(self,e):
+        if e.num == 4 or e.num == 6:
+            self._scroll_up()
+
+        elif e.num == 5 or e.num == 7:
+            self._scroll_down()
+        return "break"
+
+
 
     def ok_pressed(self):
         self.event_generate('<<OkPressed>>')
@@ -139,10 +149,12 @@ class VerticalScrolledFrame(ttk.Frame): # https://coderslegacy.com/python/make-s
                                       width=self.canvas.winfo_width());
 
     def _scroll_up(self):
-        self.vscrollbar.scroll(-1,'units')
+        self.canvas.yview_scroll(-1,'units')
+        # self.vscrollbar.scroll(-1,'units')
 
     def _scroll_down(self):
-        self.vscrollbar.scroll(1,'units')
+        self.canvas.yview_scroll(1,'units')
+        # self.vscrollbar.scroll(1,'units')
 
 
 class Window():
@@ -170,7 +182,12 @@ class Window():
         self.ctrl_c_timer           = None
 
         self.frame.bind("<<OkPressed>>",self.ok_pressed)
+        self.root.bind("<Control-plus>",self.zoom_in)
         self.root.bind("<Return>",self.ok_pressed)
+
+    def zoom_in(self,e):
+        print("zooming1")
+        self.root.event_generate('<<ZoomIn>>')
 
     def quit(self):
 
@@ -180,11 +197,8 @@ class Window():
         self.root.destroy                   ()
 
     def ok_pressed(self,event=None):
-        if self.passed_file_item_ref == self.passed_file_item:
-            # print("Identical documents")
-            return
-        else:
-            try:
+        if self.passed_file_item_ref != self.passed_file_item:
+            try: # https://docs.python.org/3/glossary.html#term-EAFP - like good god damned snakes
                 conf = configparser.RawConfigParser()
                 conf.optionxform = str
                 for i,x in self.passed_file_item.items():
@@ -193,7 +207,11 @@ class Window():
                     conf.write(configfile,space_around_delimiters=False)
 
             except Exception as e:
-                print("Error occured while saving file",e)
+
+                error_msg = f"Error occured while saving file:\n{self.passed_file_path}\n\n{e}"
+                print(error_msg,e)
+                tk.messagebox.showerror(title="Desktop-file editor:",
+                                        message=error_msg)
                 self.root.destroy()
 
             new_passed_file_item = {}
@@ -219,14 +237,15 @@ class Window():
                 # print(i,x)
 
                 box                 =   tk.Frame    (   subframe );
-                top_label           =   tk.Label    (   box, text=i );
+                top_label           =   tk.Label    (   box, text=i, font=("",10) );
                 top_label.grid      (   row=0,
                                         column=0, columnspan=2 );
                 b_row = 1
 
                 for a,b in x.items():
                     # print(a,"=",b)
-                    label               =   tk.Label        (   box,text=a, anchor="w" );
+                    label               =   tk.Label        (   box,text=a, anchor="w",font=("",10) );
+                    label.bind('<<ZoomIn>>',lambda e:print("zooming"))
 
                     label.grid          (   row=b_row,
                                             column=0,
@@ -235,7 +254,7 @@ class Window():
                     entry               =   TweakedEntry    (   parent=box,
                                                                 root=self.root,
                                                                 # key=a,
-                                                                font=("",9)
+                                                                font=("",10)
                     );
                     # '<<ReturnPressed>>' is hmmmm...
                     entry.bind('<<FieldChanged>>', lambda e, key=a, section=i: \
@@ -245,6 +264,7 @@ class Window():
 
                     entry.grid          (   row=b_row,
                                             column=1,
+                                            padx=3,
                                             sticky="we" );
                     b_row += 1
 
@@ -322,6 +342,3 @@ if __name__ == "__main__":
     window.buildUi()
 
     root.mainloop()
-
-
-
