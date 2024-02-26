@@ -70,7 +70,7 @@ class CEntry(ttk.Entry): # https://stackoverflow.com/a/75367456
         self.context_menu.add_command(label="Copy",command=lambda: self.event_generate("<<Copy>>"))
         self.context_menu.add_command(label="Paste",command=lambda: self.event_generate("<<Paste>>"))
         self.context_menu.add_command(label="Delete",command=lambda: self.delete_selcted())
-        self.context_menu.add_command(label="Select all",command=lambda: self._select_all(""))
+        self.context_menu.add_command(label="Select all",command=self._select_all_menu)
         self.context_menu.add_command(label="Clear",command=lambda: self.delete(0, tk.END))
         self.context_menu.add_command(label="Undo")
         self.context_menu.add_command(label="Redo")
@@ -163,6 +163,9 @@ class CEntry(ttk.Entry): # https://stackoverflow.com/a/75367456
             self.after(10, lambda: self.select_range(0,tk.END))
             # self.select_range(0,tk.END)
         return "break"
+
+    def _select_all_menu(self):
+        self.after(10, lambda: self.select_range(0,tk.END))
 
     def _shift_up_down(self,e):
         index_pack = self._wordAtIndex(e.widget.get(),self.index(tk.INSERT))
@@ -348,3 +351,4 @@ class CEntry(ttk.Entry): # https://stackoverflow.com/a/75367456
         self._undo_stack.clear()
         self._redo_stack.clear()
         self._undo_stack.append(self.entry_text.get())
+
