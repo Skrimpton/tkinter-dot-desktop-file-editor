@@ -120,6 +120,7 @@ class VerticalScrolledFrame(ttk.Frame): # https://coderslegacy.com/python/make-s
                                                         window=self.interior, anchor=NW );
         self.vscrollbar = vscrollbar
         self.vscrollbar.bind('<Button>',self.scrollbar_pressed)
+      
     def scrollbar_pressed(self,e):
         if e.num == 4 or e.num == 6:
             self._scroll_up()
