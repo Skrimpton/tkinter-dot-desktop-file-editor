@@ -6,6 +6,7 @@ from copy import        deepcopy
 
 from os.path import (   isfile,
                         dirname,
+                        basename,
                         realpath
 )
 from os import      (   access,
@@ -47,8 +48,6 @@ parser.add_argument (
 
 args, unknown = parser.parse_known_args()
 
-
-
 if len(unknown) > 0:
     args_file = unknown[0]
     if isfile(args_file) and args_file.endswith(".desktop"):
@@ -58,6 +57,8 @@ elif args.desktop_file != None:
         args_file = args.desktop_file
         if isfile(args_file) and args_file.endswith(".desktop"):
             passed_file = args_file
+
+
 
 if passed_file != "" and passed_file.endswith(".desktop"):
     _dir = dirname(realpath(passed_file))
@@ -70,17 +71,20 @@ if passed_file != "" and passed_file.endswith(".desktop"):
     config.read(passed_file)
 
     passed_file_item = {}
+    if len(config.sections()) == 0:
+        print(f"There are no sections to edit in {basename(passed_file)}"),sys.exit(1)
+    else:
+        for section in config.sections():           # https://stackoverflow.com/a/23944270
 
-    for section in config.sections():           # https://stackoverflow.com/a/23944270
+            passed_file_item[section]                = {}
 
-        passed_file_item[section]                = {}
+            for key, val in config.items    (section):
 
-        for key, val in config.items    (section):
-
-            passed_file_item[section][key]       = val
+                passed_file_item[section][key]       = val
 
 else:
     print("Need a .desktop-file to edit"),sys.exit(1)
+
 
 
 class VerticalScrolledFrame(ttk.Frame): # https://coderslegacy.com/python/make-scrollable-frame-in-tkinter/
@@ -167,6 +171,7 @@ class Window():
 
         self.frame.bind("<<OkPressed>>",self.ok_pressed)
         self.root.bind("<Control-Return>",self.ok_pressed)
+
     def quit(self):
 
         if self.ctrl_c_timer != None:
@@ -252,10 +257,14 @@ class Window():
                                                 expand=1 );
             self.subframe = subframe
 
+        else:
+            self.root.destroy()
+
         self.passed_file_item_ref = deepcopy(self.passed_file_item)
         self.startup = False
         self.check_save_enabled()
         self.root.title(f"Editing: {self.passed_file_path}")
+        self.toggleCtrlCTimer()
 
 
     # def return_pressed(self,e,key,section):
@@ -306,7 +315,6 @@ if __name__ == "__main__":
     window.passed_file_item = passed_file_item
     window.passed_file_path = passed_file
     window.buildUi()
-    window.toggleCtrlCTimer()
 
 
     root.mainloop()
