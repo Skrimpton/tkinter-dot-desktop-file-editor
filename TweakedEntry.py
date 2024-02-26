@@ -159,7 +159,8 @@ class CEntry(ttk.Entry): # https://stackoverflow.com/a/75367456
                 self.select_range(0,tk.END)
 
         else:
-            self.select_range(0,tk.END)
+            # print("selecting all")
+            self.after(10, lambda: self.select_range(0,tk.END))
             # self.select_range(0,tk.END)
         return "break"
 
@@ -211,7 +212,6 @@ class CEntry(ttk.Entry): # https://stackoverflow.com/a/75367456
 
 
     def popup(self, event):
-        print(event)
         self.focus_set()
         # self.context_menu.entryconfigure( "Paste", command=lambda: self.event_generate("<<Paste>>"),state="normal")
 
