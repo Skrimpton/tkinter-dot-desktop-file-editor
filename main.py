@@ -105,7 +105,7 @@ class VerticalScrolledFrame(ttk.Frame): # https://coderslegacy.com/python/make-s
         # self.canvas.pack(side=LEFT, fill=BOTH, expand=TRUE)
         vscrollbar.config(command = self.canvas.yview)
         self.okbutton = ttk.Button(self,text="Save",command=self.ok_pressed)
-        self.okbutton.grid(row=1,column=0,columnspan=2,sticky="we")
+        self.okbutton.grid(row=1,column=0,columnspan=2,sticky="we",pady=1,padx=1)
 
         # Reset the view
         self.canvas.xview_moveto(0)
@@ -120,16 +120,17 @@ class VerticalScrolledFrame(ttk.Frame): # https://coderslegacy.com/python/make-s
         self.interior_id = self.canvas.create_window(   0, 0,
                                                         window=self.interior, anchor=NW );
         self.vscrollbar = vscrollbar
-        self.vscrollbar.bind('<Button>',self.scrollbar_pressed)
+        # self.vscrollbar.bind('<Button>',self.scrollbar_pressed)
 
-    def scrollbar_pressed(self,e):
-        if e.num == 4 or e.num == 6:
-            self._scroll_up()
-            return "break"
-
-        elif e.num == 5 or e.num == 7:
-            self._scroll_down()
-            return "break"
+    # def scrollbar_pressed(self,e):
+    #
+    #     if e.num == 4 or e.num == 6:
+    #         self._scroll_up()
+    #         return "break"
+    #
+    #     elif e.num == 5 or e.num == 7:
+    #         self._scroll_down()
+    #         return "break"
 
     def ok_pressed(self):
         self.event_generate('<<OkPressed>>')
@@ -343,6 +344,3 @@ if __name__ == "__main__":
     window.buildUi()
 
     root.mainloop()
-
-
-
