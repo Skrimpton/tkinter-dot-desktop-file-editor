@@ -348,25 +348,3 @@ class CEntry(ttk.Entry): # https://stackoverflow.com/a/75367456
         self._undo_stack.clear()
         self._redo_stack.clear()
         self._undo_stack.append(self.entry_text.get())
-
-
-# --------------------------------------------------------------------------
-#                                                          HANDLE <CTRL + C>
-def keyboard_interrupt_handler(sig, frame):
-    print('You pressed Ctrl+C!',"Exiting...")
-    sys.exit(0)
-
-# --------------------------------------------------------------------------
-#                                                  MAKE AND SPAWN NEW WINDOW
-
-
-if __name__ == "__main__":
-
-
-    signal.signal(
-        signal.SIGINT,
-        keyboard_interrupt_handler
-    );
-
-    app = CEntry()
-    app.mainloop()
