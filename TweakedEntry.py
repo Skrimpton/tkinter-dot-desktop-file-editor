@@ -94,6 +94,8 @@ class CEntry(ttk.Entry): # https://stackoverflow.com/a/75367456
         self.bind   ("<Alt-Right>",             lambda e:self.handleScroll(1))
         self.bind   ("<Control-A>",             self._select_all)
         self.bind   ("<Control-a>",             self._select_all)
+        self.bind   ("<Control-Button>",        self._emit_scroll)
+        self.bind   ("<Control-space>",         self._emit_scrollToWidget)
 
         self.bind   ("<Control-z>",             self.undo)
         self.bind   ("<Control-Z>",             self.undo)
@@ -108,6 +110,15 @@ class CEntry(ttk.Entry): # https://stackoverflow.com/a/75367456
 
     def toggle_undo_redo_reopen(self,e):
         self.undo_redo_reopen = not self.undo_redo_reopen
+
+    def _emit_scrollToWidget(self,e):
+        self.event_generate('<<ScrollToField>>')
+
+    def _emit_scroll(self,e):
+        if e.num == 4 or e.num == 6:
+            self.event_generate('<<ScrollUp>>')
+        elif e.num == 5 or e.num == 7:
+            self.event_generate('<<ScrollDown>>')
 
     def _mode_dir_select(self,e):
 
@@ -394,3 +405,4 @@ class CEntry(ttk.Entry): # https://stackoverflow.com/a/75367456
         self._undo_stack.clear()
         self._redo_stack.clear()
         self._undo_stack.append(self.entry_text.get())
+
