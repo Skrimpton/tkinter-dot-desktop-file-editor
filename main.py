@@ -2,8 +2,8 @@
 
 import sys,argparse,configparser,signal
 
-from subprocess import ( call as subprocess_call,
-                        DEVNULL
+from subprocess     import (    call as subprocess_call,
+                                DEVNULL
 )
 # from subprocess import DEVNULL
 
@@ -14,7 +14,8 @@ try:
 except:
     print("no tkinter, no joy"),sys.exit(1)
 else:
-    from TweakedEntry import CEntry as TweakedEntry
+    from TweakedEntry   import CEntry as TweakedEntry
+    from Styler         import Styler
 
 from copy import        deepcopy
 
@@ -74,7 +75,15 @@ if passed_file != "" and passed_file.endswith(".desktop"):
     # config = configparser.ConfigParser()
     config = configparser.RawConfigParser()
     config.optionxform = str
-    config.read(passed_file)
+    try:
+        config.read(passed_file)
+    except configparser.Error as config_error:
+        print(config_error)
+        sys.exit(1)
+    except Exception as exception_error:
+        print(exception_error)
+        sys.exit(1)
+
 
     passed_file_item = {}
     if len(config.sections()) == 0:
@@ -105,9 +114,9 @@ class VerticalScrolledFrame(ttk.Frame): # https://coderslegacy.com/python/make-s
         vscrollbar = ttk.Scrollbar(self, orient=VERTICAL)
         vscrollbar.grid(row=1,column=1,sticky="ns")
         # vscrollbar.pack(fill=Y, side=RIGHT, expand=FALSE)
-        self.canvas = tk.Canvas(self, bd=0, highlightthickness=0,
+        self.canvas = tk.Canvas(self, bd=0, highlightthickness=0, bg='#000000',
                                 width = 200, height = 300,
-                                yscrollcommand=vscrollbar.set)
+                                yscrollcommand=self.handleScroll)
         self.canvas.grid(row=1,column=0,sticky="nswe")
         # self.canvas.pack(side=LEFT, fill=BOTH, expand=TRUE)
         vscrollbar.config(command = self.canvas.yview)
@@ -119,6 +128,7 @@ class VerticalScrolledFrame(ttk.Frame): # https://coderslegacy.com/python/make-s
         # Create a frame inside the canvas which will be scrolled with it.
         self.interior       = ttk.Frame(self.canvas)
 
+
         self.interior.bind  ('<Configure>',     self._configure_interior)
         self.canvas.bind    ('<Configure>',     self._configure_canvas)
 
@@ -127,6 +137,15 @@ class VerticalScrolledFrame(ttk.Frame): # https://coderslegacy.com/python/make-s
         self.vscrollbar = vscrollbar
         # self.vscrollbar.bind('<Button>',self.scrollbar_pressed)
 
+    def _scroll_to_widget(self, widget):
+        if self.interior.winfo_reqheight() > self.canvas.winfo_height():
+            pos     = widget.winfo_rooty() - self.interior.winfo_rooty()
+            height  = self.interior.winfo_reqheight()
+
+            self.canvas.yview_moveto(pos / height)
+
+    def handleScroll(self,e1,e2):
+        self.vscrollbar.set(e1,e2)
     # def scrollbar_pressed(self,e):
     #
     #     if e.num == 4 or e.num == 6:
@@ -162,6 +181,50 @@ class VerticalScrolledFrame(ttk.Frame): # https://coderslegacy.com/python/make-s
         self.canvas.yview_scroll(1,'units')
         # self.vscrollbar.scroll(1,'units')
 
+class QuestionDialog(tk.Toplevel):
+
+    def __init__(self, parent=None, saved_file=None , root=None, text="",  *args, **kwargs):
+
+        self.saved_file = saved_file
+
+        super().__init__(parent)
+        self.geometry('360x80')
+        self.title(f"Saved {basename(self.saved_file)}")
+
+
+        self.yes        = ttk.Button        (   self,
+                                            text='Yes',
+                                            command=self.open_dir,
+        );
+        self.no         = ttk.Button        (   self,
+                                            text='No',
+                                            command=self.destroy,
+        );
+        self.question   = ttk.Label         (   self,
+                                            text=f"Open containing directory?",
+                                            font=("",12),
+        );
+        self.info       = TweakedEntry      (   self,
+                                            enabled=False,
+                                            font=("",10),
+        );
+        self.info.entry_text.set(f"{dirname(self.saved_file)}")
+
+        self.question.bind('<Configure>', lambda e: self.question.config(wraplength=self.info.winfo_width()))
+
+        self.question.pack  (expand=0,   side="top",    fill=BOTH,   anchor="n")
+        self.info.pack      (expand=0,   side="top",    fill="x",    anchor="n")
+        self.yes.pack       (expand=1,   side="left",   fill="x",    anchor="s")
+        self.no.pack        (expand=1,   side="right",  fill="x",    anchor="s")
+        self.no.focus_set()
+    def open_dir(self):
+        _dir = dirname(self.saved_file)
+        args = ["xdg-open",_dir]
+        try:
+            subprocess_call(args, stderr=DEVNULL, stdout=DEVNULL)
+        except:
+            print(f"xdg-open {_dir} failed")
+        self.destroy()
 
 class Window():
 
@@ -175,15 +238,20 @@ class Window():
         self.root.protocol          ( "WM_DELETE_WINDOW", self.quit );
         self.root.geometry          ("600x400")
         self.root.minsize           (400,200)
+        # self.main_frame             = ttk.Frame             (root)
+        self.styler                 = Styler                (root)
+        self.startup                = True
+        self.active_field           = None
+        self.zooming                = False
         self.big_font_size          = 10
         self.small_font_size        = 9
-        self.zooming                = False
 
-        self.startup                = True
-        self.frame                  = VerticalScrolledFrame (   root );
+        self.dialog                 = None
+        self.frame                  = VerticalScrolledFrame (root);
         self.desktop_boxes          = []
 
-        self.okbutton               = ttk.Button(self.root,text="Save",command=self.ok_pressed)
+        self.okbutton               = ttk.Button            (root,text="Save",command=self.ok_pressed)
+        # self.main_frame.pack        (   expand = True, fill = tk.BOTH )
         self.okbutton.pack          (   expand = False, fill = "x" );
         self.frame.pack             (   expand = True, fill = tk.BOTH );
 
@@ -195,38 +263,56 @@ class Window():
         self.root.bind("<<OkPressed>>",self.ok_pressed)
         self.root.bind("<Control-plus>",self.zoom_in)
         self.root.bind("<Control-minus>",self.zoom_out)
+        self.root.bind("<Control-Button>",self.handleCtrlButton)
         self.root.bind("<Return>",self.ok_pressed)
+
+        self.root.bind           ('<Control-Up>',    lambda e: self.frame._scroll_up())
+        self.root.bind           ('<Control-Down>',  lambda e: self.frame._scroll_down())
+
+    # def handleActiveFieldChanged(self,e=None):
+
+    def handleCtrlButton(self,e):
+        if e.num == 4 or e.num == 6:
+            self.frame._scroll_up()
+        elif e.num == 5 or e.num == 7:
+            self.frame._scroll_down()
 
     def ok_pressed(self):
         self.event_generate('<<OkPressed>>')
 
     def update_fontsize(self,new_size1,new_size2):
         if self.zooming == True:
-            for parent in self.frame.interior.winfo_children():
+            self.root.update()
+            # self.frame.canvas.unbind    ('<Configure>')
+            # self.frame.interior.unbind  ('<Configure>')
+            self.root.after             (60,lambda e1=new_size1,e2=new_size2:self.reset_zoom(e1,e2))
 
-                for child in parent.winfo_children():
+    def reset_zoom(self,e1,e2):
 
-                    for grandchild in child.winfo_children():
+        for parent in self.frame.interior.winfo_children():
 
-                        if isinstance(grandchild,ttk.Label):
+            for child in parent.winfo_children():
 
-                            if grandchild.tag == "s":
-                                grandchild.configure(font=("",new_size1))
+                for grandchild in child.winfo_children():
 
-                            elif grandchild.tag == "k":
-                                grandchild.configure(font=("",new_size2))
+                    if isinstance(grandchild,ttk.Label):
 
-                        elif isinstance(grandchild,TweakedEntry):
-                            grandchild.configure(font=("",new_size2))
+                        if grandchild.tag == "s":
+                            grandchild.configure(font=("",e1))
 
-            self.root.update_idletasks()
-            self.root.after(20,self.reset_zoom)
+                        elif grandchild.tag == "k":
+                            grandchild.configure(font=("",e2))
 
-    def reset_zoom(self):
+                    elif isinstance(grandchild,TweakedEntry):
+                        grandchild.configure(font=("",e2))
+
+        # self.frame.canvas.bind      ('<Configure>',     self.frame._configure_canvas)
+        # self.frame.interior.bind    ('<Configure>',     self.frame._configure_canvas)
+        self.root.update            ()
         self.zooming = False
 
     def zoom_out(self,e=None): # has caused crashing
-        if self.small_font_size > 8 and self.zooming == False:
+        if self.small_font_size > 9 and self.zooming == False:
             self.zooming = True
             self.big_font_size      -= 1
             self.small_font_size    -= 1
@@ -245,19 +331,26 @@ class Window():
 
         # self.root.event_generate('<<ZoomIn>>')
 
+
     def quit(self):
 
         if self.ctrl_c_timer != None:
 
-            self.root.after_cancel          (self.ctrl_c_timer)
-            self.ctrl_c_timer               = None
+            self.root.after_cancel      (self.ctrl_c_timer)
+            self.ctrl_c_timer           = None
 
-        self.root.destroy                   ()
+        self.root.destroy               ()
+
+    def open_window(self):
+        self.dialog     =   QuestionDialog  (   self.root,
+                                                saved_file = self.passed_file_path
+        );
+        # print("open_window func finished")
+
+# --- ### SAVE THE FILE ### -------------------------------------------------------------------------- BEGIN
 
     def ok_pressed(self,event=None):
         if self.passed_file_item_ref != self.passed_file_item:
-
-# --- ### SAVE THE FILE ### -------------------------------------------------------------------------- BEGIN
 
             did_save = False
             try: # https://docs.python.org/3/glossary.html#term-EAFP - like good god damned snakes
@@ -272,14 +365,13 @@ class Window():
 
                 error_msg               =   f"Error occured while saving file:\n{self.passed_file_path}\n\n{e}"
                 print                   (   error_msg,  e   )
-                messagebox.showerror (   title="Desktop-file editor:",
+                messagebox.showerror    (   title="Desktop-file editor:",
                                             message=error_msg
                 );
                 self.root.destroy()
             else:
                 did_save = True
 
-# --- ### SAVE THE FILE ### ---------------------------------------------------------------------------- END
 
             new_passed_file_item                            = {}
 
@@ -292,15 +384,22 @@ class Window():
             self.passed_file_item                           = new_passed_file_item
             self.passed_file_item_ref                       = deepcopy(self.passed_file_item)
             self.check_save_enabled()
-            if did_save:
-                result = messagebox.askquestion(title=f"Saved document", message=f"{basename(self.passed_file_path)} was saved\nDo you want to open the containing folder?\n\n{dirname(self.passed_file_path)}")
-
-                if result == 'yes':
-                    args = ["xdg-open",dirname(self.passed_file_path)]
-                    subprocess_call(args, stderr=DEVNULL, stdout=DEVNULL)
+            if did_save and self.dialog == None:
+                self.root.after(20,self.open_window)
+            else:
+                self.dialog.destroy()
+                self.root.after(20,self.open_window)
+                # result = messagebox.askquestion(title=f"Saved document", message=f"{basename(self.passed_file_path)} was saved\nDo you want to open the containing folder?\n\n{dirname(self.passed_file_path)}")
+                #
+                # if result == 'yes':
+                #     args = ["xdg-open",dirname(self.passed_file_path)]
+                #     subprocess_call(args, stderr=DEVNULL, stdout=DEVNULL)
         else:
             print(f"Not saving: {basename(self.passed_file_path)} is unchanged.")
 
+        # print("ok_pressed finished")
+
+# --- ### SAVE THE FILE ### ---------------------------------------------------------------------------- END
 
 
     def buildUi(self):
@@ -311,7 +410,7 @@ class Window():
             for i,x in self.passed_file_item.items():
                 # print(i,x)
 
-                box                 =   tk.Frame    (   subframe );
+                box                 =   ttk.Frame    (   subframe );
                 top_label           =   ttk.Label    (   box, text=i, font=("",self.big_font_size) );
                 top_label.tag       =   "s"
                 top_label.grid      (   row=0,
@@ -334,6 +433,12 @@ class Window():
                     # '<<ReturnPressed>>' is hmmmm...
                     entry.bind('<<FieldChanged>>', lambda e, key=a, section=i: \
                                                     self.text_changed(e,key,section)
+                    );
+                    entry.bind('<<ScrollUp>>', lambda e: self.frame._scroll_up()
+                    );
+                    entry.bind('<<ScrollDown>>', lambda e: self.frame._scroll_down()
+                    );
+                    entry.bind('<<ScrollToField>>', lambda e: self.frame._scroll_to_widget(e.widget)
                     );
                     entry.insert        (   0, b );
 
