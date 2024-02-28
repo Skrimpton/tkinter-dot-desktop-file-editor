@@ -10,6 +10,9 @@ from os import      (   access,
                         W_OK
 )
 
+from subprocess     import (    call as subprocess_call,
+                                DEVNULL
+)
 from TweakedEntry   import CEntry as TweakedEntry
 class QuestionDialog(tk.Toplevel):
 
