@@ -30,7 +30,7 @@ https://github.com/Skrimpton/tkinter-dot-desktop-file-editor/assets/64572787/acf
 
 - Holding ```<Alt>``` enables touchpad scrolling inside the window / ouside of the scrollbar.
   - Why? I decided to let the fields take precedence over window for scrolling
-  - Touchpad scrolling horizontally and vertically both scroll the frame up and down.
+  - Also: Touchpad scrolling horizontally and vertically both scroll the frame up and down.
   - This is due to event.delta always returning 0 on linux, so ```<Button>``` event is handled instead
   - ```<Button>```-event does not reveal direction, according to my searxng results
   - TODO: add check for OS-type and make ```<MouseWheel>``` logic
