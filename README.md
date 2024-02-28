@@ -36,5 +36,5 @@ There is a lot of flickering when scrolling, especially when scrolling while hov
 - In place editing of both key and value  ( requires Python v. 3.6+ )
   - This comes at the cost of much higher RAM use for larger files due to the lack of on-demand-gui-loading and the weight of all those entry-fields. ( ~65 mb ram for the firefox-dummy )
     
-#### I'm working on a treeview-version which will have better/smoother and cleaner scrolling<br>It will also (hopefully) be much less rescource demanding.
+#### I'm working on a treeview-version which will have better/smoother scrolling<br>It will also (hopefully) be much less rescource demanding.
 - Downside: it might be too hard for me to keep undo/redo histories for all items. 
