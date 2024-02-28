@@ -10,19 +10,26 @@ There is a lot of flickering when scrolling, especially when scrolling while hov
 - can be used with or without -f
 ![tkeditor-example](https://github.com/Skrimpton/tkinter-dot-desktop-file-editor/assets/64572787/70e149e5-0210-4905-a023-251633455ed8)
 
+### Keyboard shortcuts:
+
+- <Ctrl+plus> and <Ctrl+minus> (not the ones on keypad) enlarges and shrinks font-sizes and is in effect zoom in/out.
+
+- Holding \<Ctrl\> enables touchpad zooming.
+
+- Holding \<Alt\> enables touchpad scrolling.
+  - Touchpad scrolling ( up & down ) and ( left & right ) both scroll the frame up and down.
+  <br> This is due to event.delta always returning 0 on linux, so <Button> is overloaded and does not differenciate directionalty 
+
+- \<Alt+Up or Down -arrows> scrolls the window
+
+- \<Alt+Left or Right -arrows> scrolls the text of focused entry-field
 
 ## 28.02.2024 update:
 # Several tweaks have been made:
 - Non-toggleable darkmode (aka bestmode)
    
 - Scrolling disabled when fullscreen / scrollable content is smaller than the window
-
-- <Ctrl+plus> and <Ctrl+minus> (not the ones on keypad) enlarges and shrinks font-sizes and is in effect zoom in/out.
-
-- Scrolling on the window is enabled by holding \<Alt\>.
-  - On touchpad up & down and left & right both scroll the frame up and down.
-  <br> This is due to event.delta always returning 0 on linux, so <Button> is overloaded and does not differenciate directionalty 
-
+- 
 - In place editing of both key and value  ( requires Python v. 3.6+ )
   - This comes at the cost of much higher RAM use for larger files due to the lack of on-demand-gui-loading and the weight of all those entry-fields. ( ~65 mb ram for the firefox-dummy )
     
