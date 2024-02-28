@@ -41,5 +41,5 @@ There is a lot of flickering when scrolling, especially when scrolling while hov
 - This version also comes with a much higher RAM cost and slower load time for larger files
   <br>due to the lack of on-demand-gui-loading and the weight of all those entry-fields. ( ~65 mb ram for the firefox-dummy )
     
-#### I'm working on a treeview-version which will have better/smoother scrolling<br>... and, hopefully, takes less resources.
+#### I'm working on a treeview-version which will have better/smoother scrolling<br>... and, hopefully, needs less resources.
 - Downside: it might be too hard for me to keep undo/redo histories for all items. 
