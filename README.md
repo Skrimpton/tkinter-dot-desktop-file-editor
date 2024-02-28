@@ -2,7 +2,7 @@
 .desktop-file editor using configparser and tkinter
 
 ### This is not an actual tool. 
-This is to test out stuff and map limitations of backend stuff, my brain, and tkinter.
+This is to test out stuff and map limitations of aforementioned stuff, my brain, and tkinter.
 
 It can edit, but handling edits of the key (left side fields) is bad and (for now) disallows saving under at least one safe condition 
 <br>(to avoid key-clobbering, which would be worse).
