@@ -358,7 +358,6 @@ class Window():
                     entry.insert        (   0, b );
                     entry.grid          (   row=b_row,
                                             column=1,
-                                            padx=3,
                                             sticky="we" );
                     b_row += 1
 
@@ -377,8 +376,9 @@ class Window():
             subframe.grid_columnconfigure   (   0,
                                                 weight=1 );
             subframe.pack                   (   fill='both',
-                                                expand=1 );
+                                                expand=1, );
             self.subframe = subframe
+
 
         else:
             print("something is very wrong. sorry")
