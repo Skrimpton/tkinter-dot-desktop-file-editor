@@ -19,7 +19,7 @@ There is a lot of flickering when scrolling, especially when scrolling while hov
 
 - Holding ```<Ctrl>``` enables touchpad zooming.
 
-- Holding ```<Alt>``` enables touchpad scrolling.
+- Holding ```<Alt>``` enables touchpad scrolling inside the window / ouside of the scrollbar.
   - Touchpad scrolling horizontally and vertically both scroll the frame up and down.
   - This is due to event.delta always returning 0 on linux, so ```<Button>``` event is handled instead
   - ```<Button>```-event does not reveal direction, according to my searxng results
