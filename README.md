@@ -32,7 +32,7 @@ There is a lot of flickering when scrolling, especially when scrolling while hov
 - Non-toggleable darkmode (aka bestmode)
    
 - Scrolling disabled when fullscreen / scrollable content is smaller than the window
-- 
+  
 - In place editing of both key and value  ( requires Python v. 3.6+ )
   - This comes at the cost of much higher RAM use for larger files due to the lack of on-demand-gui-loading and the weight of all those entry-fields. ( ~65 mb ram for the firefox-dummy )
     
