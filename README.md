@@ -19,7 +19,7 @@ There is a lot of flickering when scrolling, especially when scrolling while hov
 
 - <Ctrl+plus> and <Ctrl+minus> (not the ones on keypad) enlarges and shrinks font-sizes and is in effect zoom in/out.
 
-- Scrolling on the window is enabled by holding <Alt>.
+- Scrolling on the window is enabled by holding \<Alt\>.
   - On touchpad up & down and left & right both scroll the frame up and down.
   <br> This is due to event.delta always returning 0 on linux, so <Button> is overloaded and does not differenciate directionalty 
 
