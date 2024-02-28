@@ -1,7 +1,9 @@
 # tkinter-dot-desktop-file-editor
 .desktop-file editor using configparser and tkinter
 
-This is not a well-tested nor finished product.
+This is not a fully functional tool. 
+This is to test out stuff and map problems.
+It can edit, but handling edits of the key (left side fields) is bad and disallows saving under at least one safe condition (to avoid key-clobbering).
 
 # EPILEPTIC SEIZURE WARNING
 There is a lot of flickering when scrolling, especially when scrolling while hovering over the scrollbar.
