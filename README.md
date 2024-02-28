@@ -45,7 +45,7 @@ https://github.com/Skrimpton/tkinter-dot-desktop-file-editor/assets/64572787/acf
 - Scrolling disabled when fullscreen / scrollable content is smaller than the window
   
 - [\(Hopefully safe)](https://stackoverflow.com/a/59196714) In-place editing of both key and value
-  - Avoids saving under at least one safe condition 
+  - BUG: will deny saving under at least one safe condition 
   - I think this requires Python v. 3.6+.
   - If anyone ever sees this and knows, please leave a comment/issue.
 
