@@ -26,7 +26,7 @@ https://github.com/Skrimpton/tkinter-dot-desktop-file-editor/assets/64572787/acf
 - ```<Ctrl+plus>``` and ```<Ctrl+minus>``` enlarges and shrinks font-sizes and is in effect zoom in/out.
   - Does not handle keypad +/- (yet)
 
-- Holding ```<Ctrl>``` enables touchpad zooming.
+- Holding ```<Ctrl>``` enables touchpad zooming (scroll up / down).
 
 - Holding ```<Alt>``` enables touchpad scrolling inside the window / ouside of the scrollbar.
   - Why? I decided to let the fields take precedence over window for scrolling.
