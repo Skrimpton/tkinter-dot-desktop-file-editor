@@ -43,7 +43,7 @@ https://github.com/Skrimpton/tkinter-dot-desktop-file-editor/assets/64572787/acf
 # Several tweaks have been made:
 - Non-toggleable darkmode (aka bestmode)
    
-- Scrolling disabled when fullscreen / scrollable content is smaller than the window
+- Scrolling now disables when fullscreen / scrollable content is smaller than the window
   
 - [\(Hopefully safe)](https://stackoverflow.com/a/59196714) In-place editing of both key and value
   - BUG: will deny saving under at least one safe condition 
