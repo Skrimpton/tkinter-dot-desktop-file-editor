@@ -5,7 +5,6 @@ This is not a well-tested nor finished product.
 
 # EPILEPTIC SEIZURE WARNING
 There is a lot of flickering when scrolling, especially when scrolling while hovering over the scrollbar.
-This is due to the way scrolling a canvas in tkinter works.
 
 ### Usage
 - can be used with or without -f
