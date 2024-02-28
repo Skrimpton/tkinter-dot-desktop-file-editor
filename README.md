@@ -8,6 +8,8 @@ It can edit, but handling edits of the keys (left side) is bad and, for now, dis
 <br>(to avoid key-clobbering, which would be worse).
 
 # EPILEPTIC SEIZURE WARNING
+Yes, for real.
+
 There is a lot of flickering when scrolling, especially when scrolling while hovering over the scrollbar.
 
 ## Example video:
