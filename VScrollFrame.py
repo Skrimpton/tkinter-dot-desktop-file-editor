@@ -61,7 +61,7 @@ class VerticalScrolledFrame(ttk.Frame): # https://coderslegacy.com/python/make-s
         self.canvas.config( scrollregion=(  0, 0,
                                           size[0], size[1] ));
         if self.interior.winfo_reqwidth() != self.canvas.winfo_width():
-            self.canvas.config(width = self.interior.winfo_reqwidth()))
+            self.canvas.config(width = self.interior.winfo_reqwidth())
 
     def _configure_canvas(self, event):
         if self.interior.winfo_reqwidth() != self.canvas.winfo_width():
