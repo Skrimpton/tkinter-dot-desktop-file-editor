@@ -51,4 +51,3 @@ https://github.com/Skrimpton/tkinter-dot-desktop-file-editor/assets/64572787/acf
   <br>due to the lack of on-demand-gui-loading and the weight of all those entry-fields. ( ~65 mb ram for the firefox-dummy )
     
 #### I'm working on a treeview-version which will have better/smoother scrolling<br>... and, hopefully, needs both less resources and avoids problems with key editing.
-- Downside: it might be too hard for me to keep undo/redo histories for all items. 
