@@ -18,7 +18,7 @@ There is a lot of flickering when scrolling, especially when scrolling while hov
 
 - Holding \<Alt\> enables touchpad scrolling.
   - Touchpad scrolling horizontally and vertically both scroll the frame up and down.
-  <br> This is due to event.delta always returning 0 on linux, so <Button> is overloaded and does not differenciate directionalty 
+  <br> This is due to event.delta always returning 0 on linux, so \<Button\> event is overloaded and handles instead. This event does not track direction
 
 - \<Alt+Up or Down -arrows> scrolls the window
 
