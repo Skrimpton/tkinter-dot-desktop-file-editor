@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 from tkinter.constants import *
+CANVAS_COLOR = "#333333"
 class VerticalScrolledFrame(ttk.Frame): # https://coderslegacy.com/python/make-scrollable-frame-in-tkinter/
 
     def __init__(self, parent, *args, **kw):
@@ -14,7 +15,7 @@ class VerticalScrolledFrame(ttk.Frame): # https://coderslegacy.com/python/make-s
         vscrollbar = ttk.Scrollbar(self, orient=VERTICAL)
         vscrollbar.grid(row=0,column=1,sticky="ns")
         # vscrollbar.pack(fill=Y, side=RIGHT, expand=FALSE)
-        self.canvas = tk.Canvas(self, bd=0, highlightthickness=0, bg="#555555",
+        self.canvas = tk.Canvas(self, bd=0, highlightthickness=0, bg=CANVAS_COLOR,
                                 width = 200, height = 300,
                                 yscrollcommand=self.handleScroll)
         self.canvas.grid(row=0,column=0,sticky="nswe")
