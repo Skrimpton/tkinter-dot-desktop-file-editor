@@ -34,7 +34,7 @@ https://github.com/Skrimpton/tkinter-dot-desktop-file-editor/assets/64572787/acf
   - This is due to event.delta always returning 0 on linux, so ```<Button>``` event is handled instead
   - ```<Button>```-event does not reveal direction, according to my searxng results
   - TODO: add check for OS-type and make ```<MouseWheel>``` logic
-- 
+
 - ```<Alt+Up/Down>``` scrolls the window
 
 - ```<Alt+Left/Right>``` scrolls the text of focused entry-field
