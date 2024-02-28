@@ -14,17 +14,17 @@ There is a lot of flickering when scrolling, especially when scrolling while hov
 
 - <Ctrl+plus> and <Ctrl+minus> (not the ones on keypad) enlarges and shrinks font-sizes and is in effect zoom in/out.
 
-- Holding \<Ctrl\> enables touchpad zooming.
+- Holding ```<Ctrl>``` enables touchpad zooming.
 
-- Holding \<Alt\> enables touchpad scrolling.
+- Holding ```<Alt>``` enables touchpad scrolling.
   - Touchpad scrolling horizontally and vertically both scroll the frame up and down.
-  - This is due to event.delta always returning 0 on linux, so \<Button\> event is handled instead
-  - \<Button\>-event does not reveal direction, according to my searxng results
-  - TODO: add check for OS-type and make <MouseWheel> logic
+  - This is due to event.delta always returning 0 on linux, so ```<Button>``` event is handled instead
+  - ```<Button>```-event does not reveal direction, according to my searxng results
+  - TODO: add check for OS-type and make ```<MouseWheel>``` logic
 
-- \<Alt+Up or Down -arrows> scrolls the window
+- ```<Alt+Up or Down -arrows>``` scrolls the window
 
-- \<Alt+Left or Right -arrows> scrolls the text of focused entry-field
+- ```<Alt+Left or Right -arrows>``` scrolls the text of focused entry-field
 
 ## 28.02.2024 update:
 # Several tweaks have been made:
