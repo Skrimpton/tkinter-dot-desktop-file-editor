@@ -29,11 +29,11 @@ https://github.com/Skrimpton/tkinter-dot-desktop-file-editor/assets/64572787/acf
 - Holding ```<Ctrl>``` enables touchpad zooming.
 
 - Holding ```<Alt>``` enables touchpad scrolling inside the window / ouside of the scrollbar.
+  - I decided to let the fields take precedence over window for scrolling, that's why holding ```<Alt>``` scrolls the window
   - Touchpad scrolling horizontally and vertically both scroll the frame up and down.
   - This is due to event.delta always returning 0 on linux, so ```<Button>``` event is handled instead
   - ```<Button>```-event does not reveal direction, according to my searxng results
   - TODO: add check for OS-type and make ```<MouseWheel>``` logic
-  - I decided to let the fields take precedence over window for scrolling, that's why holding ```<Alt>``` scrolls the window
 - 
 - ```<Alt+Up/Down>``` scrolls the window
 
