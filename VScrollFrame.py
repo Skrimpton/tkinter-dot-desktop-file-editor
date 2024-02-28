@@ -48,6 +48,9 @@ class VerticalScrolledFrame(ttk.Frame): # https://coderslegacy.com/python/make-s
         self.vscrollbar.set(e1,e2)
 
     def _configure_interior(self, event):
+        # Disable scrolling when interior is smaller than window. 
+        # self.root.bind('<Configure>', xxx._configure_canvas)
+        # self.root.bind('<Configure>', xxx._configure_interior)
         if self.interior.winfo_reqheight() >= self.winfo_height():
             height = self.interior.winfo_reqheight()
             size = (self.interior.winfo_reqwidth(), self.interior.winfo_reqheight())
