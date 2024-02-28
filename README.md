@@ -20,7 +20,7 @@ https://github.com/Skrimpton/tkinter-dot-desktop-file-editor/assets/64572787/acf
 - can be used with or without -f
 ![tkeditor-example](https://github.com/Skrimpton/tkinter-dot-desktop-file-editor/assets/64572787/70e149e5-0210-4905-a023-251633455ed8)
 
-### Keyboard shortcuts:
+### Keyboard shortcuts:  
 - ```<Ctrl+Space>``` scrolls view to the currently focused entry 
 
 - ```<Ctrl+plus>``` and ```<Ctrl+minus>``` enlarges and shrinks font-sizes and is in effect zoom in/out.
@@ -33,7 +33,8 @@ https://github.com/Skrimpton/tkinter-dot-desktop-file-editor/assets/64572787/acf
   - This is due to event.delta always returning 0 on linux, so ```<Button>``` event is handled instead
   - ```<Button>```-event does not reveal direction, according to my searxng results
   - TODO: add check for OS-type and make ```<MouseWheel>``` logic
-
+  - I decided to let the fields take precedence over window for scrolling, that's why holding ```<Alt>``` scrolls the window
+- 
 - ```<Alt+Up/Down>``` scrolls the window
 
 - ```<Alt+Left/Right>``` scrolls the text of focused entry-field
