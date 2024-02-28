@@ -24,9 +24,10 @@ C002                    = "#002839" # dark greenish-blue / blueish-green
 C013                    = "#01392d" # green that isn't trying too hard and is a little bit depressed
 C3f4                    = "#3f452a" # GREENISH BROWNISH
 
-WINDOW_COLOR            = C000 # BLACK
+BLACK                   = C000
 ENTRY_FOCUSED           = Cffa
 ENTRY_UNFOCUSED         = Cfff
+CANVAS_COLOR            = C333
 
 class Styler:
 
@@ -65,19 +66,19 @@ class Styler:
         );
 
         self.style.map('Vertical.TScrollbar',
-            foreground      = [ ('disabled', WINDOW_COLOR),
-                                ('pressed', WINDOW_COLOR),
-                                ('active', WINDOW_COLOR)
+            foreground      = [ ('disabled', BLACK),
+                                ('pressed', BLACK),
+                                ('active', BLACK)
             ],
             background      = [ ('disabled', C222),
                                 ('pressed', '!focus', Cba8),
                                 ('active', C6f4),
                                 ('!active', C333)
             ],
-            bordercolor     = [ ('active', WINDOW_COLOR),
-                                ('!active', WINDOW_COLOR)
+            bordercolor     = [ ('active', BLACK),
+                                ('!active', BLACK)
             ],
-            troughcolor     = [ ('!active', WINDOW_COLOR),
+            troughcolor     = [ ('!active', BLACK),
                                 ('active', C101)
             ],
             highlightcolor  = [ ('focus', C181),
@@ -102,33 +103,28 @@ class Styler:
         );
         self.style.map(         'TEntry',
 
-            foreground          = [ ('disabled',C000),('!focus',WINDOW_COLOR), ('focus',"#ffefd8")    ],
-            background          = [ ('disabled',"#aaaaaa"),('focus',C444), ('!focus',C222)    ],
-            bordercolor         = [ ('disabled',C444),('focus',C444), ('!focus',WINDOW_COLOR)    ],
+            foreground          = [ ('disabled',C000),('!focus',"#ffefd8"), ('focus',"#ffefd8")    ],
+            background          = [ ('disabled',"#aaaaaa"),('!focus',CANVAS_COLOR), ('focus',BLACK)    ],
+            bordercolor         = [ ('disabled',C444),('focus',BLACK), ('!focus',CANVAS_COLOR)    ],
             insertcolor         = [ ('focus',Cfff),('!focus',Cff1c)    ],
-            fieldbackground     = [ ('disabled',"#888888"),('focus',C222),('!focus',"#aaaaaa")    ],
+            fieldbackground     = [ ('disabled',"#888888"),('focus',BLACK),('!focus',CANVAS_COLOR)    ],
             selectbackground    = [ ('disabled','#007f5b'), ('!disabled','#007f5b') ],
         );
         self.style.map(         'TLabel',
 
             # foreground          = [ ('disabled',Cfff), ('!disabled',"#ffefd8")    ],
             foreground          = [ ('disabled',Cfff), ('!disabled',"#ffd900")    ],
-            background          = [ ('disabled',C333),('!disabled',"#555555")  ],
-            bordercolor         = [ ('disabled',C444),('focus',C444), ('!focus',WINDOW_COLOR)    ],
+            background          = [ ('disabled',CANVAS_COLOR),('!disabled',BLACK)  ],
+            bordercolor         = [ ('disabled',C444),('focus',C444), ('!focus',BLACK)    ],
         );
         self.style.map(         'TButton',
 
             foreground          = [ ('disabled',C101), ("!active","#ffefd8"), ("active",Cff00)   ],
-            background          = [ ('disabled',"#888888"),('!active',WINDOW_COLOR),("active",C181)  ],
-            bordercolor         = [ ('disabled',C444),('focus',C444), ('!focus',WINDOW_COLOR)    ],
+            background          = [ ('disabled',"#888888"),('!active',BLACK),("active",C181)  ],
+            bordercolor         = [ ('disabled',C444),('focus',C444), ('!focus',BLACK)    ],
         );
 
         self.style.configure(   'TFrame',
-            # background=WINDOW_COLOR,
-            background="#555555",
+            background=BLACK,
+            # background="#555555",
         );
-
-
-
-
-
