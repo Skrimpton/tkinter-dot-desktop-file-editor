@@ -23,9 +23,9 @@ There is a lot of flickering when scrolling, especially when scrolling while hov
   - ```<Button>```-event does not reveal direction, according to my searxng results
   - TODO: add check for OS-type and make ```<MouseWheel>``` logic
 
-- ```<Alt+Up or Down>```-arrows scrolls the window
+- ```<Alt+Up or Down>``` scrolls the window
 
-- ```<Alt+Left or Right>```-arrows scrolls the text of focused entry-field
+- ```<Alt+Left or Right>``` scrolls the text of focused entry-field
 
 ## 28.02.2024 update:
 # Several tweaks have been made:
