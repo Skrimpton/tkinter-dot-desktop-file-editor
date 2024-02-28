@@ -4,7 +4,8 @@
 This is not a good tool. 
 This is to test out stuff and map problems with backend stuff, my logic, and/or tkinter.
 
-It can edit, but handling edits of the key (left side fields) is bad and disallows saving under at least one safe condition (to avoid key-clobbering).
+It can edit, but handling edits of the key (left side fields) is bad and (for now) disallows saving under at least one safe condition 
+(to avoid key-clobbering, which would be worse).
 
 # EPILEPTIC SEIZURE WARNING
 There is a lot of flickering when scrolling, especially when scrolling while hovering over the scrollbar.
