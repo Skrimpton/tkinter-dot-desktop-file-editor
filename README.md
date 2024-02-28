@@ -24,7 +24,7 @@ https://github.com/Skrimpton/tkinter-dot-desktop-file-editor/assets/64572787/acf
 - ```<Ctrl+Space>``` scrolls view to the currently focused entry 
 
 - ```<Ctrl+plus>``` and ```<Ctrl+minus>``` enlarges and shrinks font-sizes and is in effect zoom in/out.
-  - Does not handle keypad keys (yet)
+  - Does not handle keypad +/- (yet)
 
 - Holding ```<Ctrl>``` enables touchpad zooming.
 
