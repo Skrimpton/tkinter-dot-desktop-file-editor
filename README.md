@@ -11,11 +11,10 @@ There is a lot of flickering when scrolling, especially when scrolling while hov
 ![tkeditor-example](https://github.com/Skrimpton/tkinter-dot-desktop-file-editor/assets/64572787/70e149e5-0210-4905-a023-251633455ed8)
 
 ### Keyboard shortcuts:
+- ```<Ctrl+Space>``` scrolls view to the currently focused entry 
 
 - ```<Ctrl+plus>``` and ```<Ctrl+minus>``` enlarges and shrinks font-sizes and is in effect zoom in/out.
   - Does not handle keypad keys (yet)
-
-- ```<Ctrl+Space>``` scrolls view to the currently focused entry 
 
 - Holding ```<Ctrl>``` enables touchpad zooming.
 
