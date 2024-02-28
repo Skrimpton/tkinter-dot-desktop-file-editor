@@ -12,7 +12,7 @@ There is a lot of flickering when scrolling, especially when scrolling while hov
 
 ### Keyboard shortcuts:
 
-- <Ctrl+plus> and <Ctrl+minus> (not the ones on keypad) enlarges and shrinks font-sizes and is in effect zoom in/out.
+- ```<Ctrl+plus>``` and ```<Ctrl+minus>``` (not the ones on keypad) enlarges and shrinks font-sizes and is in effect zoom in/out.
 
 - Holding ```<Ctrl>``` enables touchpad zooming.
 
