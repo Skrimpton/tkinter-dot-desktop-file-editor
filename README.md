@@ -35,8 +35,11 @@ There is a lot of flickering when scrolling, especially when scrolling while hov
 - Scrolling disabled when fullscreen / scrollable content is smaller than the window
   
 - [\(Hopefully safe)](https://stackoverflow.com/a/59196714) In-place editing of both key and value
-  - I think this requires Python v. 3.6+. If anyone ever sees this and knows, please leave a comment/issue.
-  - This comes at the cost of much higher RAM use for larger files due to the lack of on-demand-gui-loading and the weight of all those entry-fields. ( ~65 mb ram for the firefox-dummy )
+  - I think this requires Python v. 3.6+.
+  - If anyone ever sees this and knows, please leave a comment/issue.
+
+- This version also comes with a much higher RAM cost and slower load time for larger files
+  <>brdue to the lack of on-demand-gui-loading and the weight of all those entry-fields. ( ~65 mb ram for the firefox-dummy )
     
 #### I'm working on a treeview-version which will have better/smoother scrolling<br>... and, hopefully, be much less rescource demanding.
 - Downside: it might be too hard for me to keep undo/redo histories for all items. 
