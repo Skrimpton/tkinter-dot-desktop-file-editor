@@ -15,6 +15,8 @@ There is a lot of flickering when scrolling, especially when scrolling while hov
 - ```<Ctrl+plus>``` and ```<Ctrl+minus>``` enlarges and shrinks font-sizes and is in effect zoom in/out.
   - Does not handle keypad keys (yet)
 
+- ```<Ctrl+Space>``` scrolls view to the currently focused entry 
+
 - Holding ```<Ctrl>``` enables touchpad zooming.
 
 - Holding ```<Alt>``` enables touchpad scrolling.
