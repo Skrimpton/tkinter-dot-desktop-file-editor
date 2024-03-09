@@ -32,7 +32,8 @@ https://github.com/Skrimpton/tkinter-dot-desktop-file-editor/assets/64572787/acf
   - Why? I decided to let the fields take precedence over window for scrolling.
   - Also: Touchpad scrolling horizontally and vertically both scroll the frame up and down.
   - This is due to event.delta always returning 0 on linux, so ```<Button>```-event is handled instead.
-  - ```<Button>```-events do not reveal direction, according to both my experience and searxng results.
+  - ~~```<Button>```-events do not reveal direction, according to both my experience and searxng results.~~
+    - Yes they do. event.state == 16 and event.state == 17 is vertical and horizontal respectively  
   - ```TODO:``` Add check for OS-type and ```<MouseWheel>```-logic
 
 - ```<Alt+Up/Down>``` scrolls the window
