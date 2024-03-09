@@ -114,17 +114,17 @@ class Window():
 
     def handleZoom(self,e):
         if self.resize_is_safe:
-            if (e.num == 4 or e.num == 6) and state == 17:
+            if (e.num == 4 or e.num == 6) and e.state == 16:
                 self.zoom_in()
-            elif (e.num == 5 or e.num == 7) and state == 17:
+            elif (e.num == 5 or e.num == 7) and e.state == 16:
                 self.zoom_out()
         return "break"
 
 
     def handleButtonScroll(self,e):
-        if e.num == 4 or e.num == 6:
+        if (e.num == 4 or e.num == 6) and e.state == 16:
             self.frame._scroll_up()
-        elif e.num == 5 or e.num == 7:
+        elif (e.num == 5 or e.num == 7) and e.state == 16:
             self.frame._scroll_down()
         return "break"
 
