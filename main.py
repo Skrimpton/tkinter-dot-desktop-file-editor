@@ -114,9 +114,9 @@ class Window():
 
     def handleZoom(self,e):
         if self.resize_is_safe:
-            if e.num == 4 or e.num == 6:
+            if (e.num == 4 or e.num == 6) and state == 17:
                 self.zoom_in()
-            elif e.num == 5 or e.num == 7:
+            elif (e.num == 5 or e.num == 7) and state == 17:
                 self.zoom_out()
         return "break"
 
@@ -138,7 +138,7 @@ class Window():
             # self.frame.interior.unbind  ('<Configure>')
             self.root.after             (60,lambda e1=new_size1,e2=new_size2:self.reset_zoom(e1,e2))
 
-    def reset_zoom(self,e1,e2):
+    def reset_zoom(self,e1,e2): #FIXME: this is horrible.
 
         for parent in self.frame.interior.winfo_children():
 
